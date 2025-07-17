@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+</head>
+
+<body>
+  <header>
+    <nav>
+      <ul>
+        <li><span>VACU</span></li>
+        <li><a href="">Acerca de</a></li>
+        <li><a href="">Aprender mas</a></li>
+        <li><a href="">Mapas</a></li>
+        <li><a href="login.html">Iniciar sesion</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <h2>Vacunacion temprana</h2>
+    <p>
+      Lorem, ipsum dolor, voluptatem sunt facere omnis quia a eveniet
+      corporis! Culpa cupiditate nostrum officiis, itaque aliquam quasi
+      aliquid pariatur labore.
+    </p>
+    <ul>
+      <li>MSP</li>
+      <li>Distrito Metropolitano de Quito</li>
+      <li>Hospital San Francisco</li>
+      <li>Hosp. Carlos Andrade Marin</li>
+    </ul>
+
+    <div class="container">
+      <h3>Registro de Usuario</h>
+        <p>Ingrese los datos del menor de edad para el registro</p>
+        <form action="RegisterController" method="post">
+          <div class="form-group">
+            <label for="cedula">Cédula <span>*</span></label>
+            <input type="text" id="cedula" name="cedula" required pattern="[0-9]{10}"
+              title="La cédula debe tener 10 dígitos">
+          </div>
+          <div class="form-group">
+            <label for="nombre">Nombre <span>*</span></label>
+            <input type="text" id="nombre" name="nombre" required>
+          </div>
+          <div class="form-group">
+            <label for="email">Email(opcional)</label>
+            <input type="email" id="email" name="email">
+          </div>
+          <div class="form-group">
+            <label for="password">Contraseña <span>*</span></label>
+            <input type="password" id="password" name="password" required>
+          </div>
+          <div class="form-group">
+            <label for="confirm_password">Confirmar Contraseña <span>*</span></label>
+            <input type="password" id="confirm_password" name="confirm_password" required>
+          </div>
+          <button type="submit" class="btn">Registrarse</button>
+        </form>
+        <p>¿Ya tienes una cuenta? <a href="login.html">Inicia sesión aquí</a></p>
+    </div>
+</body>
+</main>
+<footer>
+  <img src="" alt="logo Instituto">
+  <p>Lorem ipsum dolor sit amet consectetur cumque, adipisci ut totam.</p>
+</footer>
+</body>
+
+</html>

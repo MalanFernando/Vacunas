@@ -3,6 +3,7 @@ package com.example.vacunas.controller;
 import com.example.vacunas.dao.UsuarioDAO;
 import com.example.vacunas.model.Usuario;
 import com.example.vacunas.utils.PasswordUtils;
+import org.mindrot.jbcrypt.BCrypt;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -24,17 +25,17 @@ public class LoginController extends HttpServlet {
 
             if (usuario == null) {
                 request.setAttribute("error", "Usuario no encontrado");
-                request.getRequestDispatcher("login.jsp").forward(request, response);
+                request.getRequestDispatcher("index.jsp").forward(request, response);
                 return;
             }
 
             if (usuario.isBloqueado()) {
                 request.setAttribute("error", "Cuenta bloqueada. Contacte al administrador.");
-                request.getRequestDispatcher("login.jsp").forward(request, response);
+                request.getRequestDispatcher("index.jsp").forward(request, response);
                 return;
             }
-
-            if (PasswordUtils.verificarPassword(password, usuario.getPassword())) {
+            if (BCrypt.checkpw(password, usuario.getPassword())) {
+//            if (PasswordUtils.verificarPassword(password, usuario.getPassword())) {
                 // Login exitoso
                 usuarioDAO.reiniciarIntentosFallidos(usuario.getId());
 
@@ -64,12 +65,12 @@ public class LoginController extends HttpServlet {
                     request.setAttribute("error", "Contraseña incorrecta. Te quedan " + intentosRestantes + " intentos.");
                 }
 
-                request.getRequestDispatcher("login.jsp").forward(request, response);
+                request.getRequestDispatcher("index.jsp").forward(request, response);
             }
         } catch (SQLException e) {
             e.printStackTrace();
             request.setAttribute("error", "Error en el sistema. Intente más tarde.");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
+            request.getRequestDispatcher("index.jsp").forward(request, response);
         }
     }
 }

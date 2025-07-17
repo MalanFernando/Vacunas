@@ -1,5 +1,7 @@
 package com.example.vacunas.model;
 
+import com.sun.istack.internal.Nullable;
+
 import java.sql.Date;
 import java.sql.Timestamp;
 
@@ -64,7 +66,7 @@ public class Usuario {
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        this.email = (email != null && !email.isEmpty()) ? email : null;
     }
 
     public Date getFechaNacimiento() {

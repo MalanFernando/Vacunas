@@ -8,7 +8,6 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
-import java.sql.Date;
 import java.sql.SQLException;
 
 @WebServlet(name = "RegisterController", value = "/RegisterController")
@@ -17,11 +16,23 @@ public class RegisterController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String cedula = request.getParameter("cedula");
         String nombre = request.getParameter("nombre");
-        String apellido = request.getParameter("apellido");
         String email = request.getParameter("email");
-        Date fechaNacimiento = Date.valueOf(request.getParameter("fecha_nacimiento"));
         String password = request.getParameter("password");
         String confirmPassword = request.getParameter("confirm_password");
+        String rol = request.getParameter("rol");
+
+        if(rol == null || rol.isEmpty()) {
+            request.setAttribute("error", "Debe seleccionar un rol");
+            request.getRequestDispatcher("register.jsp").forward(request, response);
+            return;
+        }
+
+        rol = rol.toUpperCase().trim();
+        if(!rol.equals("DOCTOR") && !rol.equals("USER")) {
+            request.setAttribute("error", "Rol no válido: " + rol);
+            request.getRequestDispatcher("register.jsp").forward(request, response);
+            return;
+        }
 
         if (!password.equals(confirmPassword)) {
             request.setAttribute("error", "Las contraseñas no coinciden");
@@ -34,11 +45,9 @@ public class RegisterController extends HttpServlet {
         Usuario usuario = new Usuario();
         usuario.setCedula(cedula);
         usuario.setNombre(nombre);
-        usuario.setApellido(apellido);
         usuario.setEmail(email);
-        usuario.setFechaNacimiento(fechaNacimiento);
         usuario.setPassword(hashedPassword);
-        usuario.setRol("USER");
+        usuario.setRol(rol);
 
         UsuarioDAO usuarioDAO = new UsuarioDAO();
 
@@ -49,7 +58,7 @@ public class RegisterController extends HttpServlet {
                 return;
             }
 
-            if (usuarioDAO.emailExiste(email)) {
+            if (email != null && !email.isEmpty() && usuarioDAO.emailExiste(email)) {
                 request.setAttribute("error", "El email ya está registrado");
                 request.getRequestDispatcher("register.jsp").forward(request, response);
                 return;
@@ -57,7 +66,7 @@ public class RegisterController extends HttpServlet {
 
             usuarioDAO.crear(usuario);
             request.setAttribute("success", "Registro exitoso. Ahora puede iniciar sesión.");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
+            request.getRequestDispatcher("index.jsp").forward(request, response);
 
         } catch (SQLException e) {
             e.printStackTrace();

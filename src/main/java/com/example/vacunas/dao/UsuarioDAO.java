@@ -57,8 +57,12 @@ public class UsuarioDAO {
     }
 
     public void crear(Usuario usuario) throws SQLException {
-        String sql = "INSERT INTO usuarios (cedula, password, nombre, apellido, email, fecha_nacimiento, rol) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?)";
+        if (usuario.getRol() == null ||
+                (!usuario.getRol().equals("DOCTOR") && !usuario.getRol().equals("USER"))) {
+            throw new SQLException("Rol de usuario no válido: " + usuario.getRol());
+        }
+
+        String sql = "INSERT INTO usuarios (cedula, password, nombre, email, rol) VALUES (?, ?, ?, ?, ?)";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -66,18 +70,23 @@ public class UsuarioDAO {
             stmt.setString(1, usuario.getCedula());
             stmt.setString(2, usuario.getPassword());
             stmt.setString(3, usuario.getNombre());
-            stmt.setString(4, usuario.getApellido());
-            stmt.setString(5, usuario.getEmail());
-            stmt.setDate(6, new java.sql.Date(usuario.getFechaNacimiento().getTime()));
-            stmt.setString(7, usuario.getRol());
+            stmt.setString(4, usuario.getEmail() != null ? usuario.getEmail() : null);
+            stmt.setString(5, usuario.getRol());
 
             stmt.executeUpdate();
 
             try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
                     usuario.setId(generatedKeys.getInt(1));
+                }else {
+                    throw new SQLException("La creación del usuario falló, no se obtuvo ID.");
                 }
             }
+        }catch (SQLException e) {
+            System.err.println("[ERROR] SQLException al crear usuario: " + e.getMessage());
+            System.err.println("SQLState: " + e.getSQLState());
+            System.err.println("VendorError: " + e.getErrorCode());
+            throw e;
         }
     }
 
@@ -122,7 +131,6 @@ public class UsuarioDAO {
         usuario.setNombre(rs.getString("nombre"));
         usuario.setApellido(rs.getString("apellido"));
         usuario.setEmail(rs.getString("email"));
-        usuario.setFechaNacimiento(rs.getDate("fecha_nacimiento"));
         usuario.setTelefono(rs.getString("telefono"));
         usuario.setDireccion(rs.getString("direccion"));
         usuario.setIntentosFallidos(rs.getInt("intentos_fallidos"));

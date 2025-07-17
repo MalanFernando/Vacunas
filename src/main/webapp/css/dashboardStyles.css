@@ -1,0 +1,68 @@
+.content-profile {
+    margin-top: 4rem;
+}
+
+.main-welcome>p {
+    margin: .5rem 0;
+}
+
+.main-profile {
+    display: flex;
+    gap: 4rem;
+}
+
+.profile-content>picture {
+    display: block;
+    width: 150px;
+    height: 160px;
+    outline: 1px solid var(--black);
+    margin: 1rem 0;
+    border-radius: 4px;
+}
+
+.editar-btn {
+    display: block;
+    margin: 0 auto;
+}
+
+.profile-info {
+    display: flex;
+    gap: 6rem;
+    padding: 2rem 1rem;
+}
+
+.info-user>li {
+    margin: .5rem;
+}
+
+
+/* INFO */
+.main-data {
+    margin: 3rem 0;
+}
+
+.menu-info {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--black);
+}
+
+.menu-info>li,
+a {
+    padding-bottom: .3rem;
+}
+
+.menu-info>li:hover {
+    border-bottom: 2px solid var(--black);
+}
+
+.data-info {
+    display: flex;
+    justify-content: space-between;
+}
+
+.data-info h4 {
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+}
